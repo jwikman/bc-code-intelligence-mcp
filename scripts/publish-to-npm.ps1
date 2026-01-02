@@ -153,7 +153,22 @@ if ($gitStatus -and -not $DryRun) {
     }
 }
 
-# Step 5: Clean install dependencies
+# Step 5: Validate embedded knowledge submodule
+Write-Step "Validating embedded knowledge..."
+npm run validate:embedded-knowledge
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Embedded knowledge validation failed"
+    Write-Host ""
+    Write-Host "The embedded-knowledge submodule is not properly initialized." -ForegroundColor Yellow
+    Write-Host "Run these commands to fix:" -ForegroundColor Yellow
+    Write-Host "  git submodule init" -ForegroundColor White
+    Write-Host "  git submodule update --remote" -ForegroundColor White
+    Write-Host ""
+    exit 1
+}
+Write-Success "Embedded knowledge validated"
+
+# Step 6: Clean install dependencies
 Write-Step "Installing dependencies..."
 if (Test-Path "node_modules") {
     Remove-Item -Recurse -Force "node_modules"
@@ -165,7 +180,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Success "Dependencies installed"
 
-# Step 6: Run tests
+# Step 7: Run tests
 if (-not $SkipTests) {
     Write-Step "Running tests and validation..."
     npm run test:all
@@ -179,7 +194,7 @@ if (-not $SkipTests) {
     Write-Warning "Skipping tests (not recommended)"
 }
 
-# Step 7: Build
+# Step 8: Build
 Write-Step "Building package..."
 npm run build
 if ($LASTEXITCODE -ne 0) {
@@ -188,7 +203,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Success "Build completed"
 
-# Step 8: Verify build artifacts
+# Step 9: Verify build artifacts
 Write-Step "Verifying build artifacts..."
 $requiredFiles = @(
     "dist/index.js",
@@ -204,7 +219,7 @@ foreach ($file in $requiredFiles) {
 }
 Write-Success "Build artifacts verified"
 
-# Step 9: Publish (or dry-run)
+# Step 10: Publish (or dry-run)
 if ($DryRun) {
     Write-Step "Dry run - simulating publish..."
     npm publish --dry-run --access public
@@ -231,18 +246,18 @@ if ($DryRun) {
 
     Write-Success "Published successfully!"
 
-    # Step 10: Create git tag
+    # Step 11: Create git tag
     Write-Step "Creating git tag: v$version"
     git tag -a "v$version" -m "Release v$version"
 
-    # Step 11: Commit version change if we bumped
+    # Step 12: Commit version change if we bumped
     if ($VersionBump) {
         Write-Step "Committing version change..."
         git add package.json package-lock.json
         git commit -m "chore: bump version to $version"
     }
 
-    # Step 12: Push to remote
+    # Step 13: Push to remote
     Write-Step "Pushing to remote..."
     $response = Read-Host "Push commits and tags to remote? (y/N)"
     if ($response -eq 'y') {

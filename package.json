@@ -25,7 +25,8 @@
     "test:coverage": "vitest run --coverage",
     "test:all": "npm run test:contracts && npm run test:unit && npm run test:integration && npm run test:prompts",
     "validate:contracts": "tsx scripts/validate-contracts.ts",
-    "prepublishOnly": "npm run validate:contracts && npm run build",
+    "validate:embedded-knowledge": "tsx scripts/validate-embedded-knowledge.ts",
+    "prepublishOnly": "npm run validate:embedded-knowledge && npm run validate:contracts && npm run build",
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
     "prepare": "npm run build"
