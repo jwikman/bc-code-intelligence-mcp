@@ -1,6 +1,6 @@
 {
-  "name": "bc-code-intelligence-mcp",
-  "version": "1.5.7",
+  "name": "@jwikman/bc-code-intelligence-mcp",
+  "version": "1.5.7-dev.1",
   "description": "BC Code Intelligence MCP Server - Complete Specialist Bundle with AI-driven expert consultation, seamless handoffs, and context-preserving workflows",
   "main": "dist/index.js",
   "type": "module",
@@ -72,10 +72,10 @@
   "preferGlobal": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/JeremyVyska/bc-code-intelligence-mcp.git"
+    "url": "https://github.com/jwikman/bc-code-intelligence-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/JeremyVyska/bc-code-intelligence-mcp/issues"
+    "url": "https://github.com/jwikman/bc-code-intelligence-mcp/issues"
   },
-  "homepage": "https://github.com/JeremyVyska/bc-code-intelligence-mcp"
+  "homepage": "https://github.com/jwikman/bc-code-intelligence-mcp"
 }
